@@ -7,9 +7,9 @@
 #include<sys/time.h>
 #include<unordered_map>
 #include<random>
+#define MAX_NUMBERS 10000000
 #define MAX_SIZE 500000
 #define CONST_LIMIT 30000
-#define BASE 10
 #define BITS 16
 #define MASK ((1 << BITS) - 1)
 #define NR_BUCKETS 10
@@ -250,9 +250,9 @@ void radixSort(vector<int> &v, int nr, int Max) {
     for(int exp = 1; maxValue / exp > 0; exp *= 10) {
         vector<int>g[NR_BUCKETS];
         for(it = v.begin(); it != v.end(); ++it)
-            g[((*it) / exp) % BASE].push_back(*it);
+            g[((*it) / exp) % NR_BUCKETS].push_back(*it);
         Size = 0;
-        for(int i = 0; i < BASE; i++) {
+        for(int i = 0; i < NR_BUCKETS; i++) {
             for(it = g[i].begin(); it != g[i].end(); ++it)
                 v[Size++] = *it;
         }
@@ -307,6 +307,10 @@ int main() {
     fin >> T; // citesc numarul testelor
     for(i = 1; i <= T; ++i) {
         fin >> n >> max_Value; // citesc dimensiunea primului vector si valoarea sa maxima
+        if(n > MAX_NUMBERS) {
+            cout << "Incercati sa generati prea multe numere!\n";
+            continue;
+        }
         vector<int>a;
         random_device rd;
         mt19937 gen(rd());
